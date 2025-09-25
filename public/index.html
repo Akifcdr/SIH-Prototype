@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Issue Reporter - Report Issues</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-city"></i> Civic Issue Reporter</h1>
+            <p>Help improve your community by reporting issues</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-container">
+            <h2>Report a Civic Issue</h2>
+            
+            <form id="issueForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Issue Title *</label>
+                    <input type="text" id="title" name="title" required 
+                           placeholder="Brief description of the issue">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="roads">Roads & Transportation</option>
+                        <option value="sanitation">Sanitation & Waste</option>
+                        <option value="lighting">Street Lighting</option>
+                        <option value="water">Water Supply</option>
+                        <option value="drainage">Drainage</option>
+                        <option value="parks">Parks & Recreation</option>
+                        <option value="safety">Public Safety</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" rows="4" required
+                              placeholder="Provide detailed information about the issue"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Photo (Optional)</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <small>Upload a photo to help officials understand the issue better</small>
+                </div>
+
+                <div class="location-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location Information</h3>
+                    
+                    <div class="form-group">
+                        <button type="button" id="getLocationBtn" class="location-btn">
+                            <i class="fas fa-location-arrow"></i> Use Current Location
+                        </button>
+                        <small id="locationStatus">Click to automatically get your location</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address or Landmark</label>
+                        <input type="text" id="address" name="address" 
+                               placeholder="Street address or nearby landmark">
+                    </div>
+
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                </div>
+
+                <div class="reporter-info">
+                    <h3><i class="fas fa-user"></i> Contact Information (Optional)</h3>
+                    
+                    <div class="form-group">
+                        <label for="reporter_name">Your Name</label>
+                        <input type="text" id="reporter_name" name="reporter_name" 
+                               placeholder="Your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reporter_email">Email</label>
+                        <input type="email" id="reporter_email" name="reporter_email" 
+                               placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reporter_phone">Phone Number</label>
+                        <input type="tel" id="reporter_phone" name="reporter_phone" 
+                               placeholder="Your phone number">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="submitBtn" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit Report
+                    </button>
+                    <button type="reset" class="reset-btn">
+                        <i class="fas fa-undo"></i> Clear Form
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div id="messageContainer" class="message-container" style="display: none;">
+            <div id="messageContent" class="message"></div>
+        </div>
+
+        <!-- Track Issue Section -->
+        <div class="track-section">
+            <h3><i class="fas fa-search"></i> Track Your Issue</h3>
+            <div class="track-form">
+                <input type="number" id="trackId" placeholder="Enter Issue ID">
+                <button id="trackBtn" class="track-btn">Track Status</button>
+            </div>
+            <div id="trackResult" class="track-result" style="display: none;"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Government of Jharkhand - Department of Higher and Technical Education</p>
+            <p>
+                <a href="/admin">Admin Dashboard</a> | 
+                <a href="#privacy">Privacy Policy</a> | 
+                <a href="#contact">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/citizen.js"></script>
+</body>
+</html>

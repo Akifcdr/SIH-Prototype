@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civic Issue Reporter - Admin Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-cogs"></i> Admin Dashboard</h1>
+            <p>Manage and resolve civic issues reported by citizens</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="admin-header">
+            <h1>Issue Management</h1>
+            <div class="admin-actions">
+                <a href="/" class="admin-btn secondary">
+                    <i class="fas fa-home"></i> Citizen Portal
+                </a>
+                <button class="admin-btn primary" id="refreshBtn">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+                <button class="admin-btn primary" id="exportBtn">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-container" id="statsContainer">
+            <div class="stat-card total">
+                <h3 id="totalCount">-</h3>
+                <p>Total Issues</p>
+            </div>
+            <div class="stat-card reported">
+                <h3 id="reportedCount">-</h3>
+                <p>Reported</p>
+            </div>
+            <div class="stat-card progress">
+                <h3 id="progressCount">-</h3>
+                <p>In Progress</p>
+            </div>
+            <div class="stat-card resolved">
+                <h3 id="resolvedCount">-</h3>
+                <p>Resolved</p>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="statusFilter">Status</label>
+                    <select id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="reported">Reported</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="roads">Roads & Transportation</option>
+                        <option value="sanitation">Sanitation & Waste</option>
+                        <option value="lighting">Street Lighting</option>
+                        <option value="water">Water Supply</option>
+                        <option value="drainage">Drainage</option>
+                        <option value="parks">Parks & Recreation</option>
+                        <option value="safety">Public Safety</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="priorityFilter">Priority</label>
+                    <select id="priorityFilter">
+                        <option value="">All Priorities</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="searchFilter">Search</label>
+                    <input type="text" id="searchFilter" placeholder="Search title or description...">
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label>
+                    <button class="admin-btn primary" id="applyFilters">
+                        <i class="fas fa-filter"></i> Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issues Table -->
+        <div class="issues-container">
+            <table class="issues-table" id="issuesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Priority</th>
+                        <th>Location</th>
+                        <th>Reporter</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="issuesTableBody">
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading issues...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be generated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Issue Detail Modal -->
+    <div id="issueModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Issue Details</h2>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div id="issueDetails">
+                <!-- Issue details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Issue Status</h2>
+                <span class="close" id="closeStatusModal">&times;</span>
+            </div>
+            <form id="statusUpdateForm">
+                <input type="hidden" id="updateIssueId">
+                
+                <div class="form-group">
+                    <label for="newStatus">Status</label>
+                    <select id="newStatus" required>
+                        <option value="reported">Reported</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminNotes">Admin Notes</label>
+                    <textarea id="adminNotes" rows="4" 
+                              placeholder="Add notes about the status change or resolution..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> Update Status
+                    </button>
+                    <button type="button" class="reset-btn" id="cancelStatusUpdate">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="message-container" style="display: none;">
+        <div id="messageContent" class="message"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Government of Jharkhand - Department of Higher and Technical Education</p>
+            <p>
+                <a href="/">Citizen Portal</a> | 
+                <a href="#privacy">Privacy Policy</a> | 
+                <a href="#contact">Contact Us</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
